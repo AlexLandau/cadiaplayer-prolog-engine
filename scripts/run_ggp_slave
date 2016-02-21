@@ -1,0 +1,30 @@
+#!/bin/bash
+export LD_LIBRARY_PATH=`pwd`/lib
+retval=1
+dirname=slave_`hostname`.$1
+echo $dirname
+if [ ! -d $dirname ]
+then 
+    mkdir $dirname
+fi
+rm -f $dirname/*
+cd $dirname
+mkdir games
+cd games
+mkdir ggp
+mkdir pl
+mkdir kif
+cd ..
+cp ../ggp.extensions.pl .
+cp ../slavegame.kif ./games/kif/
+cp ../kif2pl .
+cp ../kif2ggp .
+cp ../startup .
+while [  $retval -ne 0 ] 
+do
+  ../clientslave $1 slavegame
+  retval=$?
+  echo $retval
+  sleep 1
+done
+cd ..

@@ -1,0 +1,11 @@
+if [ $# -lt 2 ] 
+then
+	./kif2pl games/kif/$1.kif
+	mv games/kif/$1.pl games/pl/
+
+	yap -g "compile(['ggp.extensions.pl', 'games/pl/$1.pl']), save_program('games/ggp/$1.ggp'), halt."
+else
+	./kif2pl $2$1.kif
+
+	yap -g "compile(['ggp.extensions.pl', '$2$1.pl']), save_program('$2$1.ggp'), halt."
+fi

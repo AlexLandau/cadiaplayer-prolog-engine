@@ -1,0 +1,11 @@
+#!/bin/sh
+
+./run_ggp_fastmastslave 8000 &
+./run_ggp_fastmastslave 8001 &
+#./run_ggp_fastmastslave 8002 &
+#./run_ggp_fastmastslave 8003 &
+#./run_ggp_fastmastslave 8004 &
+#./run_ggp_fastmastslave 8005 &
+#./run_ggp_fastmastslave 8006 &
+#./run_ggp_fastmastslave 8007 &
+

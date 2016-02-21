@@ -1,0 +1,23 @@
+#!/bin/bash
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib:/usr/lib/:`pwd`/lib
+retval=1
+dirname=`hostname`.$1
+echo $dirname
+if [ ! -d $dirname ]
+then 
+    mkdir $dirname
+fi
+rm -f $dirname/*
+cd $dirname
+cp ../ggp.extensions.pl .
+cp ../client.kif .
+cp ../kif2pl .
+cp ../startup .
+while [  $retval -ne 0 ] 
+do
+  ../client $1 client
+  retval=$?
+  echo $retval
+  sleep 1
+done
+cd ..

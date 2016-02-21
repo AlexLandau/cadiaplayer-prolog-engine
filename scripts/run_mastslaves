@@ -1,0 +1,3 @@
+./run_ggp_mastslave 7000 &
+./run_ggp_mastslave 7001 &
+./run_ggp_mastslave 7002 &
