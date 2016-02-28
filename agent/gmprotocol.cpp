@@ -3,6 +3,8 @@
 using namespace std;
 using namespace cadiaplayer::agent;
 
+#define STDIN_FILENO 0
+
 bool GMProtocol::hasMessage()
 {
 	int flags = fcntl(STDIN_FILENO, F_GETFL);
