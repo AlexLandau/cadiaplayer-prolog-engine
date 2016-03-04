@@ -286,29 +286,17 @@ GamePlayer* getPlayer(Settings& settings)
 	return player;
 }
 
+//I've cannibalized this class so as to avoid having to mess with
+//the Automake system in ways I don't understand.
 int main(int argc, char *argv[])
-{ 
-	Settings settings(SETTINGS_FILE);
-	GamePlayer* player = getPlayer(settings);
-	
-	int external;
-	Agent* agent = NULL;
-	if(settings.getIntValue(SET_PLAYER_TYPE, external))
-		agent = new Agent(player, external);
-	else
-		agent = new Agent(player, false);
-	
-	std::string filename;
-	if(settings.getStringValue(SET_LOGFILE, filename))
-		agent->setLogFile(filename);
-	if(settings.getStringValue(SET_EXTERNALS_FILE, filename))
-		agent->setExternalsFile(filename);
-	
-	// New version - restart mode implied
-	int result = agent->run();
-	// Old version - restart mode as parameter
-	// int result = agent->run(argc, argv);
-	
-	delete player;
-	exit(result);
-};  
+{
+  if (argc >= 2)
+    std::cout << argv[1] << '\n';
+  if (argc >= 3)
+    std::cout << argv[2] << '\n';
+  if (argc >= 4)
+    std::cout << argv[3] << '\n';
+  //  GameTheory* theory = new GameTheory();
+  //delete theory;
+  parsing::GameParser parser;
+};
