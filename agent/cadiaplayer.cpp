@@ -25,6 +25,7 @@
 
 #include "../utils/settings.h"
 // Settings constants
+#define VERSION "3.0"
 #define SETTINGS_FILE			"cadiaplayer.ini"
 #define SETTING_INT_DISABLED	-1
 #define SET_PLAYER_TYPE			"TYPE"
@@ -286,6 +287,14 @@ GamePlayer* getPlayer(Settings& settings)
 	return player;
 }
 
+int stringToInt(char *str) {
+  std::stringstream ss;
+  ss << str;
+  int i;
+  ss >> i;
+  return i;
+}
+
 //I've cannibalized this class so as to avoid having to mess with
 //the Automake system in ways I don't understand.
 int main(int argc, char *argv[])
@@ -296,7 +305,52 @@ int main(int argc, char *argv[])
     std::cout << argv[2] << '\n';
   if (argc >= 4)
     std::cout << argv[3] << '\n';
-  //  GameTheory* theory = new GameTheory();
+  if (argc < 4)
+  {
+    std::cout << "Three arguments must be provided: game file, output file, and seconds to run\n";
+    exit(1);
+  }
+  char* gameFilename = argv[1];
+  char* outputFilename = argv[2];
+  int secondsToRun = stringToInt(argv[3]);
+
+  GameTheory theory;
   //delete theory;
   parsing::GameParser parser;
+  parser.parseFile(&theory, gameFilename);
+  std::cout << "a0\n";
+  theory.setKifFile(gameFilename);
+  std::cout << "a1\n";
+  cadiaplayer::logic::PrologController controller;
+  std::cout << "a2\n";
+  theory.useController(&controller);
+  std::cout << "a3\n";
+  std::vector<int> goals;
+  std::time_t startTime = std::time(NULL);
+  int stateChangeCount = 0;
+  int rolloutCount = 0;
+
+  std::cout << "a\n";
+
+  //Core loop
+  while (std::time(NULL) - startTime < secondsToRun)
+  {
+    std::cout << "b\n";
+    while (!theory.isTerminal())
+    {
+    std::cout << "c\n";
+      theory.playRandomMove();
+      stateChangeCount++;
+    }
+    theory.getGoalValues(goals);
+    theory.retractAll();
+    rolloutCount++;
+  }
+  std::time_t totalTime = std::time(NULL) - startTime;
+
+  Settings output(outputFilename);
+  output.set("version", VERSION);
+  output.set("millisecondsTaken", ((int) totalTime) * 1000);
+  output.set("numStateChanges", stateChangeCount);
+  output.set("numRollouts", rolloutCount);
 };

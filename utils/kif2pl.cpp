@@ -340,7 +340,7 @@ void Parser::matchToken( Tokentag tag )
 	}
 	else {
 		cerr << "Syntax problem line " << m_token.m_lineno << ": expected token '" 
-		<< TokenStr[tag] << "', but received '" << TokenStr[m_token.m_tag] << "+ for " << m_token.m_str << ".\n";
+		<< TokenStr[tag] << "', but received '" << TokenStr[m_token.m_tag] << "' for " << m_token.m_str << ".\n";
 		exit(1);
 	}
 }
