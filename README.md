@@ -1,7 +1,9 @@
 # cadiaplayer-prolog-engine
 A fork of CadiaPlayer for use with the gdl-perf testing framework.
 
-CadiaPlayer was written by Hilmar Finnsson, Yngvi Bjornsson, et alia. More information at: http://cadia.ru.is/wiki/public:cadiaplayer:main
+CadiaPlayer was written by Hilmar Finnsson, Yngvi Björnsson, Stephan Schiffel, Gylfi Þór Guðmundsson, and Stefán Freyr Guðmundsson. More information at: http://cadia.ru.is/wiki/public:cadiaplayer:main
+
+License note: The code was provided freely on the CadiaPlayer website. It does not include a formal license, but notes: "This code is presented 'as is' without any guarantees". This version of the code was marked as 3.0, last updated November 18 2012.
 
 Installation instructions are on that wiki page. However, the following notes may also be helpful.
 
