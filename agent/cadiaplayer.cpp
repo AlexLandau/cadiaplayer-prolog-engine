@@ -6,6 +6,8 @@
  *  Created by Hilmar Finnsson on 9/12/08.
  *  Copyright 2008 Reykjavik University. All rights reserved.
  *
+ *  Modifications by Alex Landau to function as a performance
+ *  test agent.
  */
 
 #include "agent.h"

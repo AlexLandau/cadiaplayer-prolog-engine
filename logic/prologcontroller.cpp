@@ -39,6 +39,7 @@ PrologController::~PrologController()
 bool PrologController::init( GameTheory* gametheory, std::string gamename)
 {
 	GameController::init(gametheory, gamename);
+	std::cout << "Done with GameController init\n";
 	
 	syncInfo = NULL;
 	initInfo = NULL;
@@ -48,24 +49,37 @@ bool PrologController::init( GameTheory* gametheory, std::string gamename)
 	command += " ";
 	command += getGamename();
 	
+	std::cout << command << "\n";
 	// Run the conversion program
 	int result = system(command.c_str());
+	std::cout << "p2\n";
 	if(result < 0)
 		std::cerr << "Warning: system(" << command << ") returned " << result << std::endl;
 	
 	// Build the prolog filename
 	prologfile = GDL_TO_PLSTATE_FOLDER;
-	prologfile += getGamename();
+	//Convert from e.g. "../foo.kif" to "foo"
+	//	std::string shortGameName(getGamename());
+	int lastPeriodIndex = getGamename().find_last_of('.');
+	int lastSlashIndex = getGamename().find_last_of('/');
+	std::string shortGameName = getGamename().substr(lastSlashIndex + 1, lastPeriodIndex - lastSlashIndex - 1);
+	std::cout << shortGameName << "\n";
+	prologfile += shortGameName;
 	prologfile += GDL_TO_PL_EXTENSION;
+	std::cout << "p3\n";
 	try
 	{
 #ifdef USE_YAP_FAST_INIT
 		// Init YAP with the new game description
+	std::cout << "p31\n";
+	std::cout << prologfile << "\n";
 		if ( YAP_FastInit( prologfile.c_str() ) == YAP_BOOT_ERROR ) 
 		{
 			return false;
 		}
+		std::cout << "p4\n";
 #else
+	std::cout << "p32\n";
 		YAP_init_args initArgs;
 		char savestate[4096];
 		strcpy(savestate, prologfile.c_str());
@@ -87,6 +101,7 @@ bool PrologController::init( GameTheory* gametheory, std::string gamename)
 		{
 			return false;
 		}
+		std::cout << "p5\n";
 #endif
 	}
 	catch(...)
@@ -94,6 +109,7 @@ bool PrologController::init( GameTheory* gametheory, std::string gamename)
 		return false;
 	}
     YAP_Reset();
+    std::cout << "p6\n";
 	
 	// Workaround - Yap seems to fail sometimes if the first thing asked is getMoves
 	this->isTerminal();

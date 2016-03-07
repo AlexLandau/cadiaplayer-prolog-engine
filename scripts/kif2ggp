@@ -1,9 +1,16 @@
+#! /bin/bash
 if [ $# -lt 2 ] 
 then
-	./kif2pl games/kif/$1.kif
-	mv games/kif/$1.pl games/pl/
+	FULL_GAME_PATH=$1
+	echo "Full game path: ${FULL_GAME_PATH}\n"
+	PATH_WITHOUT_EXT=${FULL_GAME_PATH%.kif}
+        echo "Path without ext: ${PATH_WITHOUT_EXT}"
+        NAME_ONLY=`expr match "${PATH_WITHOUT_EXT}" '.*\/\([^/]*\)'`
+	echo "Name only: ${NAME_ONLY}"
+	./kif2pl "${PATH_WITHOUT_EXT}.kif"
+	mv "${PATH_WITHOUT_EXT}.pl" games/pl/
 
-	yap -g "compile(['ggp.extensions.pl', 'games/pl/$1.pl']), save_program('games/ggp/$1.ggp'), halt."
+	yap -g "compile(['ggp.extensions.pl', 'games/pl/${NAME_ONLY}.pl']), save_program('games/ggp/${NAME_ONLY}.ggp'), halt."
 else
 	./kif2pl $2$1.kif
 
