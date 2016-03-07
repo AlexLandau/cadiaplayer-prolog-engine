@@ -2,11 +2,8 @@
 if [ $# -lt 2 ] 
 then
 	FULL_GAME_PATH=$1
-	echo "Full game path: ${FULL_GAME_PATH}\n"
 	PATH_WITHOUT_EXT=${FULL_GAME_PATH%.kif}
-        echo "Path without ext: ${PATH_WITHOUT_EXT}"
         NAME_ONLY=`expr match "${PATH_WITHOUT_EXT}" '.*\/\([^/]*\)'`
-	echo "Name only: ${NAME_ONLY}"
 	./kif2pl "${PATH_WITHOUT_EXT}.kif"
 	mv "${PATH_WITHOUT_EXT}.pl" games/pl/
 

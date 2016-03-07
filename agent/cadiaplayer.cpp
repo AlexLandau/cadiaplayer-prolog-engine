@@ -320,27 +320,19 @@ int main(int argc, char *argv[])
   //delete theory;
   parsing::GameParser parser;
   parser.parseFile(&theory, gameFilename);
-  std::cout << "a0\n";
   theory.setKifFile(gameFilename);
-  std::cout << "a1\n";
   cadiaplayer::logic::PrologController controller;
-  std::cout << "a2\n";
   theory.useController(&controller);
-  std::cout << "a3\n";
   std::vector<int> goals;
   std::time_t startTime = std::time(NULL);
   int stateChangeCount = 0;
   int rolloutCount = 0;
 
-  std::cout << "a\n";
-
   //Core loop
   while (std::time(NULL) - startTime < secondsToRun)
   {
-    std::cout << "b\n";
     while (!theory.isTerminal())
     {
-    std::cout << "c\n";
       theory.playRandomMove();
       stateChangeCount++;
     }
