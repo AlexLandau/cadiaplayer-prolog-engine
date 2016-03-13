@@ -301,12 +301,6 @@ int stringToInt(char *str) {
 //the Automake system in ways I don't understand.
 int main(int argc, char *argv[])
 {
-  if (argc >= 2)
-    std::cout << argv[1] << '\n';
-  if (argc >= 3)
-    std::cout << argv[2] << '\n';
-  if (argc >= 4)
-    std::cout << argv[3] << '\n';
   if (argc < 4)
   {
     std::cout << "Three arguments must be provided: game file, output file, and seconds to run\n";
@@ -315,6 +309,9 @@ int main(int argc, char *argv[])
   char* gameFilename = argv[1];
   char* outputFilename = argv[2];
   int secondsToRun = stringToInt(argv[3]);
+  std::cout << "Clocks per second: " << CLOCKS_PER_SEC << '\n';
+  int clockUnitsToRun = secondsToRun * CLOCKS_PER_SEC;
+  std::cout << "Clock difference: " << clockUnitsToRun << '\n';
 
   GameTheory theory;
   //delete theory;
@@ -324,12 +321,12 @@ int main(int argc, char *argv[])
   cadiaplayer::logic::PrologController controller;
   theory.useController(&controller);
   std::vector<int> goals;
-  std::time_t startTime = std::time(NULL);
   int stateChangeCount = 0;
   int rolloutCount = 0;
+  std::clock_t startTime = std::clock();
 
   //Core loop
-  while (std::time(NULL) - startTime < secondsToRun)
+  while (std::clock() - startTime < clockUnitsToRun)
   {
     while (!theory.isTerminal())
     {
@@ -340,11 +337,15 @@ int main(int argc, char *argv[])
     theory.retractAll();
     rolloutCount++;
   }
-  std::time_t totalTime = std::time(NULL) - startTime;
+  std::clock_t endTime = std::clock();
+  double secondsActuallyRun = (endTime - startTime) / (double) CLOCKS_PER_SEC;
+  std::cout << "secondsActuallyRun: " << secondsActuallyRun << '\n';
+  int millisecondsRun = (int) (secondsActuallyRun * 1000);
+  std::cout << "millisecondsRun: " << millisecondsRun << '\n';
 
   Settings output(outputFilename);
   output.set("version", VERSION);
-  output.set("millisecondsTaken", ((int) totalTime) * 1000);
+  output.set("millisecondsTaken", millisecondsRun);
   output.set("numStateChanges", stateChangeCount);
   output.set("numRollouts", rolloutCount);
 };
